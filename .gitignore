@@ -1,0 +1,17 @@
+/Library/
+/Temp/
+/Obj/
+/Logs/
+/UserSettings/
+/Build/
+/Releases/
+/.vs/
+/.idea/
+/.vscode/
+.DS_Store
+Thumbs.db
+*.log
+*.zip
+*.user
+*.csproj
+*.sln
