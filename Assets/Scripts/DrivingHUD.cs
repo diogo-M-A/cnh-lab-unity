@@ -35,7 +35,7 @@ namespace CnhTreino
             if(!session||!car)return;Styles();
             float scale=Mathf.Min(Screen.width/1440f,Screen.height/900f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1440*scale)/2,(Screen.height-900*scale)/2,0),Quaternion.identity,Vector3.one*scale);
             Panel(new Rect(20,20,1400,84));Text(42,32,350,36,"CNH LAB",title);Text(43,70,380,22,"DIREÇÃO MANUAL  /  CATEGORIA B",small);
-            Text(510,38,480,30,session.ExerciseNames[session.exercise],title);Text(512,72,600,20,"HATCH 1.0   •   CIRCUITO DE PRÁTICA   •   30 KM/H",small);
+            Text(510,38,480,30,session.ExerciseNames[session.exercise],title);Text(512,72,600,20,"HATCH INSPIRADO NO CELTA   •   MANUAL 1.0   •   30 KM/H",small);
             if(Btn(1120,44,140,help?"Ocultar ajuda [F1]":"Ajuda [F1]"))help=!help;
             if(Btn(1270,44,125,"Reiniciar [F2]"))session.Reset(session.exercise);
             Panel(new Rect(20,120,315,help?610:290));Text(40,140,270,24,"SEU TREINO",heading);

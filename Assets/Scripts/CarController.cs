@@ -9,6 +9,7 @@ namespace CnhTreino
         public WheelCollider[] wheels;
         public Transform[] visuals;
         public Renderer[] leftLights, rightLights, brakeLights;
+        public Renderer[] reverseLights;
         public Light[] beams;
         public bool belt, seat, mirrors, doorClosed = true, handbrake = true, headlights, hazards;
         public int signal;
@@ -66,14 +67,15 @@ namespace CnhTreino
             if (Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.X)) Observe();
             }
             bool blink = Time.time % 1 < .5f;
-            SetLights(leftLights, blink && (signal == -1 || hazards), Color.yellow);
-            SetLights(rightLights, blink && (signal == 1 || hazards), Color.yellow);
+            SetLights(leftLights, blink && (signal == -1 || hazards), new Color(1,.52f,.035f));
+            SetLights(rightLights, blink && (signal == 1 || hazards), new Color(1,.52f,.035f));
             SetLights(brakeLights, brake > .05f || handbrake || headlights, Color.red);
+            if(reverseLights!=null)SetLights(reverseLights,motor.running&&motor.gear==-1,new Color(.9f,.94f,1));
             if(beams!=null)foreach(var beam in beams)beam.enabled=headlights;
             audioSource.pitch = Mathf.Lerp(.65f, 3, motor.rpm / 6500); audioSource.volume = motor.running ? .23f : 0;
         }
         void SetLights(Renderer[] lights, bool on, Color color)
-        { foreach (var lamp in lights) lamp.material.color = on ? color * 1.6f : color * .18f; }
+        { foreach (var lamp in lights) {var material=lamp.material;material.color=on?color:color*.18f;material.EnableKeyword("_EMISSION");material.SetColor("_EmissionColor",on?color*.85f:Color.black);} }
         void FixedUpdate()
         {
             if (paused) return;

@@ -12,6 +12,7 @@ public static class ProjectBuilder
     public static void Prepare()
     {
         PlayerSettings.companyName="CNH Lab";PlayerSettings.productName="CNH Lab - Treino Categoria B";
+        PlayerSettings.bundleVersion="0.3.0";
         PlayerSettings.defaultScreenWidth=1440;PlayerSettings.defaultScreenHeight=900;
         PlayerSettings.fullScreenMode=FullScreenMode.Windowed;PlayerSettings.runInBackground=true;
         PlayerSettings.colorSpace=ColorSpace.Linear;
@@ -31,6 +32,13 @@ public static class ProjectBuilder
         var shaders=graphics.FindProperty("m_AlwaysIncludedShaders");bool has=false;
         for(int i=0;i<shaders.arraySize;i++)if(shaders.GetArrayElementAtIndex(i).objectReferenceValue==Shader.Find("Standard"))has=true;
         if(!has){shaders.InsertArrayElementAtIndex(shaders.arraySize);shaders.GetArrayElementAtIndex(shaders.arraySize-1).objectReferenceValue=Shader.Find("Standard");graphics.ApplyModifiedProperties();}
+        var skyShader=Shader.Find("Skybox/Procedural");bool hasSky=false;
+        for(int i=0;i<shaders.arraySize;i++)if(shaders.GetArrayElementAtIndex(i).objectReferenceValue==skyShader)hasSky=true;
+        if(!hasSky&&skyShader){shaders.InsertArrayElementAtIndex(shaders.arraySize);shaders.GetArrayElementAtIndex(shaders.arraySize-1).objectReferenceValue=skyShader;graphics.ApplyModifiedProperties();}
+        var textShader=Shader.Find("CNHLab/DepthText");bool hasDepthText=false;
+        for(int i=0;i<shaders.arraySize;i++)if(shaders.GetArrayElementAtIndex(i).objectReferenceValue==textShader)hasDepthText=true;
+        if(!hasDepthText&&textShader){shaders.InsertArrayElementAtIndex(shaders.arraySize);shaders.GetArrayElementAtIndex(shaders.arraySize-1).objectReferenceValue=textShader;graphics.ApplyModifiedProperties();}
+        var passcode=settings.FindProperty("ps4Passcode");if(passcode!=null){passcode.stringValue="";settings.ApplyModifiedProperties();}
         AssetDatabase.SaveAssets();
     }
     static void Check(bool condition,string name){if(!condition)throw new Exception("FAIL: "+name);Debug.Log("PASS: "+name);}
@@ -55,5 +63,14 @@ public static class ProjectBuilder
         var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{"Assets/Scenes/Treino.unity"},locationPathName="Build/Windows/CNH Lab.exe",target=BuildTarget.StandaloneWindows64,options=BuildOptions.None});
         if(result.summary.result!=BuildResult.Succeeded)throw new Exception("Build falhou: "+result.summary.result);
         File.WriteAllText("Build/build-result.txt","Build Windows concluído. "+result.summary.totalSize+" bytes.");
+        SanitizeSettings();
+    }
+    [MenuItem("CNH LAB/Limpar configuração de plataforma não utilizada")]
+    public static void SanitizeSettings()
+    {
+        const string path="ProjectSettings/ProjectSettings.asset";
+        var content=File.ReadAllText(path);
+        content=System.Text.RegularExpressions.Regex.Replace(content,@"(?m)^([ \t]*ps4Passcode:)[^\r\n]*","$1");
+        File.WriteAllText(path,content,new System.Text.UTF8Encoding(false));
     }
 }

@@ -25,6 +25,7 @@ namespace CnhTreino
             car=TrainingWorld.Instance.car;session=GetComponent<TrainingSession>();
             yield return new WaitForSeconds(1.5f);
             Check(session.points==0,"veículo parado não recebe faltas ao nascer");
+            Check(GraphicsChecks.Run(car),"seis verificações estruturais dos gráficos");
             if(System.Array.IndexOf(System.Environment.GetCommandLineArgs(),"-nographics")<0)
             { CaptureScene(); }
             session.enabled=false;
@@ -71,6 +72,19 @@ namespace CnhTreino
             var texture=new Texture2D(1440,900,TextureFormat.RGB24,false);texture.ReadPixels(new Rect(0,0,1440,900),0,0);texture.Apply();
             File.WriteAllBytes(Path.Combine(Application.dataPath,"../../scene-preview.png"),texture.EncodeToPNG());
             camera.targetTexture=null;RenderTexture.active=old;rt.Release();Destroy(rt);Destroy(texture);
+            var position=camera.transform.position;var rotation=camera.transform.rotation;float fov=camera.fieldOfView;
+            CaptureAngle(camera,new Vector3(-4.4f,2.25f,5.5f),"celta-front-v0.3.0.png");
+            CaptureAngle(camera,new Vector3(-4.3f,2.4f,-5.5f),"celta-rear-v0.3.0.png");
+            camera.transform.SetPositionAndRotation(position,rotation);camera.fieldOfView=fov;
+        }
+        void CaptureAngle(Camera camera,Vector3 offset,string filename)
+        {
+            camera.transform.position=car.transform.TransformPoint(offset);camera.transform.LookAt(car.transform.position+Vector3.up*.85f);camera.fieldOfView=43;
+            var target=new RenderTexture(1440,900,24){antiAliasing=4};target.Create();var old=RenderTexture.active;
+            camera.targetTexture=target;camera.Render();RenderTexture.active=target;
+            var image=new Texture2D(1440,900,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,1440,900),0,0);image.Apply();
+            File.WriteAllBytes(Path.Combine(Application.dataPath,"../../"+filename),image.EncodeToPNG());
+            camera.targetTexture=null;RenderTexture.active=old;target.Release();Destroy(target);Destroy(image);
         }
     }
 }

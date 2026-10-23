@@ -1,10 +1,17 @@
 # CNH LAB — treino de direção manual no Unity
 
-Jogo de estudo em português para PC, criado no **Unity 6000.6.6f1**, sem assets pagos ou pacotes externos. O hatch procedural tem dimensões aproximadas de um compacto brasileiro; é inspirado no porte do Celta, sem reproduzir um modelo Chevrolet oficial.
+Jogo de estudo em português para PC, criado no **Unity 6000.6.6f1**, sem assets pagos ou pacotes externos. A versão **0.3.0** traz um hatch de quatro portas inspirado visualmente no Chevrolet Celta, modelado por código: carroceria com caixas de roda, capô e teto curvos, vidros inclinados, frisos, rodas com pneus e aros, faróis, lanternas e emblema estilizado. É uma aproximação própria, sem vínculo com a Chevrolet ou precisão de modelo CAD.
 
 ## Jogar
 
-Para baixar sem instalar o Unity, abra a seção **Releases** deste repositório, baixe `CNH-Lab-Windows-v0.2.0.zip`, extraia a pasta inteira e execute `CNH Lab.exe`. O código-fonte desta página deve ser aberto ou compilado no Unity; o executável é distribuído separadamente na release.
+Para baixar sem instalar o Unity, abra [a release v0.3.0](https://github.com/diogo-M-A/cnh-lab-unity/releases/tag/v0.3.0), baixe `CNH-Lab-Windows-v0.3.0.zip`, extraia a pasta inteira e execute `CNH Lab.exe`. O código-fonte desta página deve ser aberto ou compilado no Unity; o executável é distribuído separadamente na release.
+
+## Gráficos da versão 0.3.0
+
+O cenário inclui céu procedural, luz solar com sombras suaves, reflexos estáticos no carro, antialiasing 4×, asfalto e gramado texturizados, árvores com copas irregulares, casas com telhados e janelas, calçadas, bancos, postes e colinas no horizonte. A placa PARE é octogonal e a placa de velocidade é circular. A geometria estática do carro e das rodas é combinada por material para reduzir chamadas de desenho. Os novos detalhes visuais não adicionam colliders ao carro: a física continua usando a carroceria e quatro WheelColliders.
+
+![Hatch inspirado no Celta — vista frontal](https://github.com/diogo-M-A/cnh-lab-unity/releases/download/v0.3.0/celta-front-v0.3.0.png)
+![Hatch inspirado no Celta — vista traseira](https://github.com/diogo-M-A/cnh-lab-unity/releases/download/v0.3.0/celta-rear-v0.3.0.png)
 
 Abra **`Jogar.bat`** nesta pasta ou `Build/Windows/CNH Lab.exe`. Mantenha a pasta `CNH Lab_Data`, `MonoBleedingEdge` e as DLLs ao lado do executável. A interface contém os comandos e quatro exercícios. F1 esconde a ajuda, C alterna câmera, Esc pausa e F2 reinicia.
 
@@ -64,6 +71,9 @@ No Unity Hub, escolha **Add / Add project from disk** e selecione esta pasta. Ab
 - `ProjectBuilder.cs`: configuração, testes e build Windows.
 - `RuntimeSmoke.cs`: ensaio automatizado da física no executável.
 - `ScenarioChecks.cs`: verificações das regras de parada, conversão, estacionamento e rampa.
+- `CeltaVisuals.cs` / `VisualGeometry.cs`: malhas da carroceria, acabamento, rodas e combinação de geometria.
+- `StreetEnvironment.cs`: materiais, céu, reflexos, vegetação e bairro.
+- `GraphicsChecks.cs` / `Assets/Shaders/DepthText.shader`: verificações estruturais e texto de cenário com oclusão correta.
 
 Para compilar, instale o módulo Windows Build Support (Mono) e use **CNH LAB → Gerar jogo Windows** ou execute `Compilar.ps1`. Pela linha de comando: `Unity.exe -batchmode -nographics -quit -projectPath "CAMINHO_DO_PROJETO" -executeMethod ProjectBuilder.Build -logFile "CAMINHO_DO_LOG"`. O menu **Testar transmissão** verifica as regras do câmbio. Execute `Testar.bat` para ensaiar arrancada, frenagem e regras dos exercícios. O executável aceita `-batchmode -nographics -smokeTest` e produz `Build/runtime-smoke.txt`. Sem `-nographics`, também renderiza `Build/scene-preview.png` diretamente pela câmera, sem a interface.
 

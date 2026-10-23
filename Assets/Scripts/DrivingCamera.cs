@@ -11,7 +11,7 @@ namespace CnhTreino
         public void Start()
         {
             view=new GameObject("Câmera do aluno").AddComponent<Camera>();view.tag="MainCamera";view.fieldOfView=65;view.nearClipPlane=.06f;view.farClipPlane=350;
-            view.backgroundColor=new Color(.64f,.78f,.85f);view.clearFlags=CameraClearFlags.SolidColor;
+            view.backgroundColor=new Color(.64f,.78f,.85f);view.clearFlags=CameraClearFlags.Skybox;view.allowHDR=true;view.allowMSAA=true;
             view.gameObject.AddComponent<AudioListener>();
             leftMirror=Mirror("Retrovisor esquerdo",new Vector3(-.96f,1.25f,.7f),-155);
             rightMirror=Mirror("Retrovisor direito",new Vector3(.96f,1.25f,.7f),155);
@@ -20,7 +20,7 @@ namespace CnhTreino
         {
             var o=new GameObject(name);o.transform.SetParent(car.transform,false);o.transform.localPosition=p;o.transform.localRotation=Quaternion.Euler(6,yaw,0);
             var c=o.AddComponent<Camera>();c.fieldOfView=65;c.nearClipPlane=.1f;c.farClipPlane=160;c.depth=-2;
-            c.backgroundColor=new Color(.64f,.78f,.85f);c.clearFlags=CameraClearFlags.SolidColor;
+            c.backgroundColor=new Color(.64f,.78f,.85f);c.clearFlags=CameraClearFlags.Skybox;
             var rt=new RenderTexture(320,160,16);rt.Create();c.targetTexture=rt;return rt;
         }
         void Update() { if(Input.GetKeyDown(KeyCode.C)) mode=(mode+1)%3; }

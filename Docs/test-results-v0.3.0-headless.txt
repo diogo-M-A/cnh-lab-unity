@@ -1,0 +1,11 @@
+CNH LAB • TESTE INTEGRADO
+PASS: veículo parado não recebe faltas ao nascer
+PASS: seis verificações estruturais dos gráficos
+PASS: arrancada pelo controlador de produção
+PASS: freio de serviço imobiliza o carro
+PASS: ré movimenta o carro para trás
+PASS: direção altera a trajetória física
+PASS: retomada real em rampa de 8 graus
+PASS: regras e regressões dos exercícios
+Pico no ensaio: 44,39 km/h
+Resultado: PASS
